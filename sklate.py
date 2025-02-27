@@ -81,7 +81,7 @@ async def Sikandar(update: Update, context: CallbackContext):
         await context.bot.send_message(chat_id=chat_id, text=f"*✅ User {target_user_id} ke {coins} coins kaat diye. Balance: {new_balance}.*", parse_mode='Markdown')
 
 async def attack(update: Update, context: CallbackContext):
-    global attack_in_progress, attack_end_time, bot_start_time
+    global attack_in_progress, attack_end_time
 
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
@@ -112,7 +112,7 @@ async def attack(update: Update, context: CallbackContext):
             text=(
                 "*❌ Usage galat hai! Command ka sahi format yeh hai:*\n"
                 "*👉 /attack <ip> <port> <duration>*\n"
-                "*📌 Example: /attack 192.168.1.1 26547 240*"
+                "*📌 Example: /attack 192.168.1.1 20876 240*"
             ),
             parse_mode='Markdown'
         )
@@ -127,9 +127,7 @@ async def attack(update: Update, context: CallbackContext):
     if port in restricted_ports or (100 <= port <= 999):
         await context.bot.send_message(
             chat_id=chat_id,
-            text=(
-                "*❌ YE PORT WRONG HAI SAHI PORT DALO AUR NAHI PATA TOH YE VIDEO DEKHO ❌*"
-            ),
+            text=( "*❌ YE PORT WRONG HAI SAHI PORT DALO AUR NAHI PATA TOH YE VIDEO DEKHO ❌*"),
             parse_mode='Markdown'
         )
         return
@@ -153,15 +151,13 @@ async def attack(update: Update, context: CallbackContext):
     attack_end_time = datetime.now() + timedelta(seconds=duration)
     await context.bot.send_message(
         chat_id=chat_id,
-        text=(
-            "*🚀 [ATTACK INITIATED] 🚀*\n\n"
-            f"*💣 Target IP: {ip}*\n"
-            f"*🔢 Port: {port}*\n"
-            f"*🕒 Duration: {duration} seconds*\n"
-            f"*💰 Coins Deducted: {COINS_REQUIRED_PER_ATTACK}*\n"
-            f"*📉 Remaining Balance: {new_balance}*\n\n"
-            "*🔥 Attack chal raha hai! Chill kar aur enjoy kar! 💥*"
-        ),
+        text=( "*🚀 [ATTACK INITIATED] 🚀*\n\n"
+               f"*💣 Target IP: {ip}*\n"
+               f"*🔢 Port: {port}*\n"
+               f"*🕒 Duration: {duration} seconds*\n"
+               f"*💰 Coins Deducted: {COINS_REQUIRED_PER_ATTACK}*\n"
+               f"*📉 Remaining Balance: {new_balance}*\n\n"
+               "*🔥 Attack chal raha hai! Chill kar aur enjoy kar! 💥*"),
         parse_mode='Markdown'
     )
 
@@ -197,13 +193,11 @@ async def run_attack(chat_id, ip, port, duration, context):
         attack_end_time = None
         await context.bot.send_message(
             chat_id=chat_id,
-            text=(
-                "*✅ [ATTACK FINISHED] ✅*\n\n"
-                f"*💣 Target IP: {ip}*\n"
-                f"*🔢 Port: {port}*\n"
-                f"*🕒 Duration: {duration} seconds*\n\n"
-                "*💥 Attack complete! Ab chill kar aur feedback bhej! 🚀*"
-            ),
+            text=( "*✅ [ATTACK FINISHED] ✅*\n\n"
+                   f"*💣 Target IP: {ip}*\n"
+                   f"*🔢 Port: {port}*\n"
+                   f"*🕒 Duration: {duration} seconds*\n\n"
+                   "*💥 Attack complete! Ab chill kar aur feedback bhej! 🚀*"),
             parse_mode='Markdown'
         )
 
@@ -249,57 +243,19 @@ async def help(update: Update, context: CallbackContext):
         "🚨 *𝐈𝐦𝐩𝐨𝐫𝐭𝐚𝐧𝐭 𝐓𝐢𝐩𝐬:* 🚨\n"
         "- *BOT REPLY NAA DE ISKA MATLAB KOI AUR BNDA ATTACK LAGYA HAI SO WAIT.*\n"
         "- *Agar koi dikkat aaye toh admin ko contact karo: @H3X_neeraj*\n\n"
-        "💥 *Ab jao aur hacker banne ka natak shuru karo!* 💥"
     )
     await context.bot.send_message(chat_id=chat_id, text=message, parse_mode='Markdown')
 
-async def users(update: Update, context: CallbackContext):
-    """Display all users and their data, only for the admin."""
-    chat_id = update.effective_chat.id
-
-    # Only allow the admin to run this command
-    if chat_id != ADMIN_USER_ID:
-        await context.bot.send_message(
-            chat_id=chat_id,
-            text="*🖕 Chal nikal Chakke! Teri aukaat nahi hai yeh command chalane ki chmod +x * wale NOOB.*",
-            parse_mode='Markdown'
-        )
-        return
-
-    # Fetch all users from MongoDB
-    users_cursor = users_collection.find()
-    user_data = await users_cursor.to_list(length=None)
-
-    if not user_data:
-        await context.bot.send_message(
-            chat_id=chat_id,
-            text="*⚠️ No users found in the database.*",
-            parse_mode='Markdown'
-        )
-        return
-
-    # Send the user data in a formatted message
-    message = "*📊 List of all users in the database: 📊*\n\n"
-    for user in user_data:
-        message += f"**User ID:** {user['user_id']}  |  **Coins:** {user['coins']}\n"
-
-    # Send the message to the admin
-    await context.bot.send_message(
-        chat_id=chat_id,
-        text=message,
-        parse_mode='Markdown'
-    )
-
-# Add the users command handler
 def main():
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("Sikandar", Sikandar))
     application.add_handler(CommandHandler("attack", attack))
+    application.add_handler(CommandHandler("uptime", uptime))
     application.add_handler(CommandHandler("myinfo", myinfo))
     application.add_handler(CommandHandler("help", help))
-    application.add_handler(CommandHandler("uptime", uptime))
-    application.add_handler(CommandHandler("users", users))  # Add the new /users command handler
+
     application.run_polling()
 
 if __name__ == '__main__':
