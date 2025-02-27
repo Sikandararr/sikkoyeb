@@ -1,0 +1,19 @@
+name: udp-flooder
+services:
+  - name: udp-flooder-service
+    type: worker  # Worker type since it's not a web app
+    dockerfile: ./Dockerfile  # Uses Dockerfile for deployment
+    regions:
+      - fra  # Frankfurt region (you can change this)
+    env:
+      - name: TARGET_IP
+        value: "192.168.1.1"  # Change to your target IP
+      - name: TARGET_PORT
+        value: "80"  # Target port
+      - name: PACKET_SIZE
+        value: "200"  # Packet size in bytes
+      - name: THREADS
+        value: "5"  # Number of threads
+    scalability:
+      min_instances: 1
+      max_instances: 1
