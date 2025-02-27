@@ -17,4 +17,4 @@ services:
     run:
       command: "gcc -o bgmi newvpsbest.c -lpthread -lrt"
     run:
-      command: "python sklate.py"  # Start your script
+      command: "python vps1.py"  # Start your script
