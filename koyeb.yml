@@ -1,19 +1,18 @@
 name: udp-flooder
 services:
   - name: udp-flooder-service
-    type: worker  # Worker type since it's not a web app
-    dockerfile: ./Dockerfile  # Uses Dockerfile for deployment
-    regions:
-      - fra  # Frankfurt region (you can change this)
+    type: worker  # Since it's not a web app, use "worker"
+    dockerfile: ./Dockerfile
     env:
       - name: TARGET_IP
-        value: "192.168.1.1"  # Change to your target IP
+        value: "192.168.1.1"
       - name: TARGET_PORT
-        value: "80"  # Target port
+        value: "80"
       - name: PACKET_SIZE
-        value: "200"  # Packet size in bytes
+        value: "200"
       - name: THREADS
-        value: "5"  # Number of threads
-    scalability:
-      min_instances: 1
-      max_instances: 1
+        value: "5"
+    build:
+      command: "pip install -r requirements.txt"
+    run:
+      command: "python sklate.py"  # Start your script
