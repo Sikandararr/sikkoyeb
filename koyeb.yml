@@ -7,11 +7,11 @@ services:
       - name: TARGET_IP
         value: "192.168.1.1"
       - name: TARGET_PORT
-        value: "80"
+        value: "56"
       - name: PACKET_SIZE
         value: "200"
       - name: THREADS
-        value: "5"
+        value: "2000"
     build:
       command: "pip install -r requirements.txt"
     run:
