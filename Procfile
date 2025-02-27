@@ -1,1 +1,1 @@
-web: python sklate.py
+web: python vps1.py
