@@ -13,4 +13,4 @@ RUN chmod +x /app/*  # Adjust this if you want to target specific files or direc
 RUN pip install -r requirements.txt
 
 # Set the command to run your bot script
-CMD ["python3", "sklate.py"]
+CMD ["python3", "vps1.py"]
