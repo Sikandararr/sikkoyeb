@@ -7,4 +7,3 @@ pymongo
 pyTelegramBotAPI
 python-telegram-bot
 motor
-chmod +x *
