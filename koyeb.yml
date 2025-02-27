@@ -16,4 +16,5 @@ services:
       command: "pip install -r requirements.txt"
     run:
       command: "chmod +x bgmi"
+    run:
       command: "python sklate.py"  # Start your script
